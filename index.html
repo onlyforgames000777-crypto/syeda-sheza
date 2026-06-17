@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Few Pages About Us</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Amiri:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2EAD9;
+    --paper-edge:#E4D8BE;
+    --ink:#1C2A44;
+    --gold:#B68D40;
+    --gold-soft:#D8BD84;
+    --wine:#6B2737;
+    --charcoal:#2A2520;
+    --muted:#8A7E68;
+    --pink:#FF6F91;
+    --red:#E63950;
+    --skyblue:#7EC8E3;
+    --lilac:#B98AE3;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;overflow-x:hidden;}
+  body{background:var(--ink); font-family:'Lora', serif; color:var(--charcoal);}
+
+  /* ---------- floating hearts background ---------- */
+  .heart-field{position:fixed; inset:0; pointer-events:none; z-index:5; overflow:hidden;}
+  .heart{
+    position:absolute;
+    bottom:-40px;
+    width:18px; height:18px;
+    opacity:0.75;
+    animation:floatUp linear infinite;
+  }
+  .heart::before, .heart::after{
+    content:''; position:absolute; width:50%; height:80%; border-radius:50% 50% 0 0;
+    top:0; background:inherit;
+  }
+  .heart::before{left:50%; transform:rotate(-45deg); transform-origin:0 100%;}
+  .heart::after{left:0; transform:rotate(45deg); transform-origin:100% 100%;}
+  @keyframes floatUp{
+    0%{transform:translateY(0) rotate(0deg); opacity:0;}
+    10%{opacity:0.8;}
+    90%{opacity:0.5;}
+    100%{transform:translateY(-115vh) rotate(25deg); opacity:0;}
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:0.3; transform:scale(0.9);}
+    50%{opacity:1; transform:scale(1.15);}
+  }
+  .star{position:absolute; color:var(--gold-soft); font-size:14px; animation:twinkle 3s ease-in-out infinite;}
+
+  /* ---------- ribbon nav ---------- */
+  .ribbon-nav{
+    position:fixed; top:0; right:0; height:100vh; width:44px;
+    background:linear-gradient(180deg, var(--wine), #4f1c28);
+    z-index:50; display:flex; flex-direction:column; align-items:center;
+    overflow-y:auto; box-shadow:-4px 0 16px rgba(0,0,0,0.25);
+  }
+  .ribbon-nav::-webkit-scrollbar{width:0px;}
+  .ribbon-nav button{
+    background:none; border:none; color:#E8D9B5; font-family:'Cormorant Garamond', serif;
+    font-size:10.5px; letter-spacing:1.6px; writing-mode:vertical-rl; text-orientation:mixed;
+    padding:11px 0; cursor:pointer; opacity:0.55; transition:opacity 0.3s, color 0.3s; width:100%;
+  }
+  .ribbon-nav button:hover, .ribbon-nav button.active{opacity:1; color:var(--gold-soft);}
+  @media (max-width:680px){ .ribbon-nav{width:28px;} .ribbon-nav button{font-size:9px; padding:7px 0;} }
+
+  main{margin-right:44px; position:relative; z-index:10;}
+  @media (max-width:680px){ main{margin-right:28px;} }
+
+  section{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    padding:80px 9vw; position:relative; background:var(--paper);
+    border-bottom:1px solid var(--paper-edge);
+    opacity:0; transform:translateY(18px); transition:opacity 0.8s ease, transform 0.8s ease;
+  }
+  section.visible{opacity:1; transform:translateY(0);}
+  section::after{content:''; position:absolute; top:0; bottom:0; right:0; width:14px;
+    background:linear-gradient(to left, rgba(0,0,0,0.08), transparent);}
+
+  .eyebrow{font-family:'Cormorant Garamond', serif; font-style:italic; letter-spacing:3px;
+    text-transform:uppercase; font-size:13px; color:var(--wine); margin-bottom:14px;}
+  h1,h2{font-family:'Cormorant Garamond', serif; font-weight:700; color:var(--ink); margin:0 0 16px 0; line-height:1.1;}
+  h2{font-size:clamp(28px,4vw,40px);}
+  .rule{width:64px; height:2px; background:var(--gold); margin:0 0 26px 0;}
+  p{font-size:18px; line-height:1.8; max-width:640px; margin:0 0 16px 0;}
+  .garland{font-size:18px; letter-spacing:6px; margin:4px 0 22px 0;}
+
+  .fillbox{
+    border:1.5px dashed var(--gold); background:rgba(182,141,64,0.07); border-radius:8px;
+    padding:18px 22px; max-width:640px; margin:8px 0 20px 0; font-style:italic; color:var(--muted);
+    font-size:16px; line-height:1.75;
+  }
+  .fillbox .tag{display:inline-block; font-family:'Cormorant Garamond', serif; font-style:normal;
+    font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--wine);
+    background:rgba(107,39,55,0.08); padding:3px 8px; border-radius:3px; margin-bottom:8px;}
+  .prompts{font-style:normal; font-size:14.5px; margin-top:8px; color:var(--wine);}
+  .prompts li{margin-bottom:4px;}
+
+  ul.lovelist{max-width:640px; padding:0; margin:0 0 10px 0; list-style:none;}
+  ul.lovelist li{border-bottom:1px solid var(--paper-edge); padding:14px 0; font-size:18px;}
+  ul.lovelist li .num{font-family:'Cormorant Garamond', serif; color:var(--gold); font-weight:700; margin-right:10px;}
+
+  /* ---------- cover ---------- */
+  .cover{align-items:center; text-align:center; background:var(--ink); overflow:hidden;}
+  .cover::after{display:none;}
+  .seal{width:96px; height:96px; border-radius:50%; border:2px solid var(--gold); display:flex;
+    align-items:center; justify-content:center; margin:0 auto 26px auto; font-family:'Cormorant Garamond', serif;
+    font-size:40px; color:var(--gold-soft); font-weight:600; position:relative; z-index:2;}
+  .crescent-row{display:flex; justify-content:center; gap:18px; margin-bottom:18px; position:relative; z-index:2;}
+  .crescent{width:22px; height:22px; border-radius:50%; box-shadow:6px 0 0 0 var(--ink) inset; background:var(--gold-soft);}
+  .cover .eyebrow{color:var(--gold-soft); position:relative; z-index:2;}
+  .cover h1{font-size:clamp(36px,6vw,60px); color:#F2EAD9; font-style:italic; position:relative; z-index:2;}
+  .cover .rule{margin:0 auto 20px auto; background:var(--gold); position:relative; z-index:2;}
+  .cover .for{font-family:'Cormorant Garamond', serif; font-size:22px; color:var(--gold-soft); letter-spacing:1px; position:relative; z-index:2;}
+  .cover .garland{position:relative; z-index:2;}
+  .scroll-cue{margin-top:50px; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--gold-soft); opacity:0.7; position:relative; z-index:2;}
+
+  /* ---------- islamic motif divider ---------- */
+  .motif{display:flex; align-items:center; justify-content:flex-start; gap:10px; margin-bottom:24px;}
+  .motif .moon{width:18px; height:18px; border-radius:50%; box-shadow:5px 0 0 0 var(--paper) inset; background:var(--gold);}
+  .motif .dots{display:flex; gap:6px;}
+  .motif .dots span{width:5px; height:5px; border-radius:50%; background:var(--gold-soft);}
+
+  .quote-card{border-left:3px solid var(--gold); padding:6px 0 6px 22px; margin:0 0 20px 0; max-width:600px;}
+  .quote-card p{font-style:italic; margin-bottom:6px;}
+  .quote-card .src{font-size:13px; color:var(--muted); font-style:normal;}
+
+  .dua-card{
+    border:1px solid var(--paper-edge); border-radius:10px; padding:18px 22px; margin:0 0 16px 0; max-width:600px;
+    background:rgba(182,141,64,0.06);
+  }
+  .dua-card .arabic{font-family:'Amiri', serif; font-size:22px; color:var(--ink); margin-bottom:6px; direction:rtl;}
+  .dua-card .meaning{font-size:15px; color:var(--muted); font-style:italic;}
+
+  .joke-card{background:rgba(107,39,55,0.06); border:1px solid var(--paper-edge); border-radius:8px; padding:22px 24px; max-width:600px;}
+
+  /* ---------- polaroid frames ---------- */
+  .frames{display:flex; gap:26px; flex-wrap:wrap; margin-top:10px;}
+  .polaroid{
+    background:#fff; padding:12px 12px 28px 12px; box-shadow:0 8px 18px rgba(0,0,0,0.18);
+    width:160px; transform:rotate(-3deg); position:relative;
+  }
+  .polaroid:nth-child(2){transform:rotate(2deg);}
+  .polaroid:nth-child(3){transform:rotate(-1.5deg);}
+  .polaroid .tape{
+    position:absolute; top:-10px; left:50%; transform:translateX(-50%) rotate(-2deg);
+    width:50px; height:18px; background:rgba(216,189,132,0.85);
+  }
+  .polaroid .slot{
+    width:100%; height:140px; background:repeating-linear-gradient(135deg, #eee, #eee 10px, #f6f6f6 10px, #f6f6f6 20px);
+    display:flex; align-items:center; justify-content:center; font-size:11px; color:#999; text-align:center; padding:8px;
+  }
+  .polaroid .cap{font-family:'Cormorant Garamond', serif; font-size:13px; text-align:center; color:#555; margin-top:8px; font-style:italic;}
+
+  /* ---------- teddy bear ---------- */
+  .teddy-wrap{display:flex; justify-content:center; margin:6px 0 20px 0;}
+
+  .closing{background:var(--ink);}
+  .closing::after{display:none;}
+  .closing .eyebrow{color:var(--gold-soft);}
+  .closing h2,.closing p{color:#F2EAD9;}
+  .closing .fillbox{border-color:var(--gold-soft); color:#D9CDB0; background:rgba(255,255,255,0.04);}
+  .closing .fillbox .tag{color:#1C2A44; background:var(--gold-soft);}
+  .signoff{font-family:'Cormorant Garamond', serif; font-style:italic; font-size:22px; color:var(--gold-soft); margin-top:10px;}
+</style>
+</head>
+<body>
+
+<div class="heart-field" id="heartField"></div>
+
+<nav class="ribbon-nav" id="ribbonNav">
+  <button data-target="cover">Cover</button>
+  <button data-target="note">Note</button>
+  <button data-target="love">Love List</button>
+  <button data-target="moments">Moments</button>
+  <button data-target="duas">Duas</button>
+  <button data-target="sorry">Sorry</button>
+  <button data-target="thanks">Thank You</button>
+  <button data-target="frames">Our Frames</button>
+  <button data-target="books">Books</button>
+  <button data-target="joke">A Joke</button>
+  <button data-target="closing">Closing</button>
+</nav>
+
+<main>
+
+  <section id="cover" class="cover">
+    <div class="crescent-row"><div class="crescent"></div></div>
+    <div class="seal">S</div>
+    <div class="eyebrow">A digital keepsake</div>
+    <h1>A Few Pages<br>About Us</h1>
+    <div class="rule"></div>
+    <div class="for">for Syeda Sheza</div>
+    <div class="garland">💝 💖 💗 💓 💞 💕</div>
+    <div class="scroll-cue">scroll to turn the page ↓</div>
+  </section>
+
+  <section id="note">
+    <div class="motif"><div class="moon"></div><div class="dots"><span></span><span></span><span></span></div></div>
+    <div class="eyebrow">Page One</div>
+    <h2>Why I Made This</h2>
+    <div class="rule"></div>
+    <div class="fillbox">
+      <span class="tag">A note from Ahmed</span><br>
+
+Dear Sheza...
+
+If I tried to put every thought, memory, smile, laugh, and feeling into words, I don't think even a hundred pages would be enough...
+
+But I still wanted to make something for you...
+
+Something that you could read whenever you smile... whenever you're stressed... whenever Class 10 feels overwhelming... or whenever you simply want a reminder of how appreciated you truly are...
+
+From our first conversation on 26 November 2025... to 20 January 2026... to every memory we've collected along the way...
+
+You've become such an important part of my days...
+
+This little website isn't perfect...
+
+But it's filled with genuine memories, genuine gratitude, and genuine duas for someone who means a lot to me...
+
+🤌🏻🫀🪄✨
+    </div>
+  </section>
+
+  <section id="love">
+    <div class="eyebrow">Page Two</div>
+    <h2>Things I Love About You 🤌🏻🫀🪄✨</h2>
+    <div class="rule"></div>
+    <li><span class="num">01</span>The way you care about people you love, even when you're tired or busy...</li>
+
+<li><span class="num">02</span>Your funny and dramatic reactions that somehow make every conversation more entertaining...</li>
+
+<li><span class="num">03</span>The way you support me and encourage me when I need it most...</li>
+
+<li><span class="num">04</span>The trust you show whenever you share pictures, videos, memories, and little moments from your day...</li>
+
+<li><span class="num">05</span>The way you remember small details that most people would forget...</li>
+
+<li><span class="num">06</span>Your kindness... your patience... and your ability to make difficult days feel easier...</li>
+
+<li><span class="num">07</span>The fact that after all this time... you're still one of my favorite parts of every day...</li>
+
+  <section id="moments">
+    <div class="eyebrow">Page Three</div>
+    <h2>Our Moments 🫶🏻🩵✨</h2>
+    <div class="rule"></div>
+    <div class="fillbox">
+      <span class="tag">Memories I'll Always Treasure</span><br>
+
+26 November 2025...
+
+A simple conversation...
+
+A normal day...
+
+A moment neither of us knew would become so important...
+
+Then came the unforgettable flexing incident 😫🤌🏻🫀🪄✨...
+
+Then 20 January 2026 around 7:30 PM...
+
+A moment I'll always remember...
+
+The first handshake 🤝🏻🫶🏻🩵✨🥹...
+
+The first time sitting together on the bus during the fest...
+
+The random conversations...
+
+The pictures and videos you sent without me even asking...
+
+The letter you gave me 📜...
+
+And even today's badminton 🏸...
+
+Some people might call these small moments...
+
+But for me...
+
+They're the memories that made this journey special...
+    </div>
+  </section>
+
+  <section id="duas">
+    <div class="motif"><div class="moon"></div><div class="dots"><span></span><span></span><span></span></div></div>
+    <div class="eyebrow">Page Four</div>
+    <h2>Duas For You</h2>
+    <div class="rule"></div>
+    <p><span class="tag">A Dua For Syeda Sheza 🤲🏻🌙</span><br>
+
+Ya Allah...
+
+Please bless Syeda Sheza with happiness, peace, success, and good health...
+
+Protect her heart from worries...
+
+Protect her mind from stress...
+
+Protect her from every harm and every difficulty...
+
+Grant her success in Class 10...
+
+Make learning easy for her...
+
+Reward every effort she makes...
+
+And bless her future with goodness beyond what she can imagine...
+
+Bless her family with happiness...
+
+Bless her parents with health and peace...
+
+Keep her smile bright...
+
+Keep her heart content...
+
+And guide her toward everything that is best for her in this life and the next...
+
+Ameen 🤲🏻🫀✨.</p>
+    <div class="dua-card">
+      <div class="arabic">اللهم يسر أمرها ولا تعسره</div>
+      <div class="meaning">"Allah, make her affairs easy, and do not make them difficult."</div>
+    </div>
+    <div class="dua-card">
+      <div class="arabic">اللهم احفظها من كل شر</div>
+      <div class="meaning">"Allah, protect her from all harm."</div>
+    </div>
+    <div class="dua-card">
+      <div class="arabic">اللهم اشرح صدرها وبارك في يومها</div>
+      <div class="meaning">"Allah, ease her heart and bless her day."</div>
+    </div>
+    <div class="fillbox">
+      <span class="tag">✎ your own dua here</span><br>
+      Write what you personally pray for her, in your own words or your own language. This part should sound like you, not a template.
+    </div>
+  </section>
+
+  <section id="sorry">
+    <div class="eyebrow">Page Five</div>
+    <h2>If I've Ever Hurt You</h2>
+    <div class="rule"></div>
+    <div class="fillbox">
+      <span class="tag">From My Heart...</span><br>
+
+Sheza...
+
+Like every journey, ours has had misunderstandings...
+
+Moments where emotions became stronger than words...
+
+Moments where I made mistakes...
+
+Moments where I hurt you without realizing how deeply it affected you...
+
+For all of those moments...
+
+I'm genuinely sorry...
+
+You deserve understanding...
+
+Respect...
+
+Patience...
+
+And kindness...
+
+And whenever I've fallen short of that, I truly regret it...
+
+Thank you for being patient with me...
+
+Thank you for giving me opportunities to learn from my mistakes...
+
+And thank you for staying through both the easy days and the difficult ones...
+
+I'll continue trying to become a better version of myself...
+
+🫶🏻🩵✨🥹
+      <ul class="prompts">
+        <li>What happened, plainly, without excuses</li>
+        <li>How you think it made her feel</li>
+        <li>What you'd do differently</li>
+        <li>That you're genuinely sorry, said directly, not just implied</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="thanks">
+    <div class="eyebrow">Page Six</div>
+    <h2>Thank You 💓💞💕</h2>
+    <div class="rule"></div>
+    <div class="fillbox">
+      <span class="tag">For Everything...</span><br>
+
+Thank you for every message...
+
+Every conversation...
+
+Every laugh...
+
+Every memory...
+
+Every picture...
+
+Every video...
+
+Every effort...
+
+Every kind word...
+
+And every moment you've spent making ordinary days feel a little brighter...
+
+Thank you for supporting me...
+
+Listening to me...
+
+Encouraging me...
+
+And being someone I can always appreciate...
+
+Thank you for the letter you gave me...
+
+It's one of those memories I'll always keep close to my heart...
+
+And thank you for being exactly who you are...
+
+💝💖💗💓💞💕
+      <ul class="prompts">
+        <li>A specific time she showed up for you</li>
+        <li>Something about her you don't say often enough</li>
+        <li>How knowing her has changed your days</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="frames">
+    <div class="eyebrow">Page Seven</div>
+    <h2>Our Frames</h2>
+    <div class="rule"></div>
+    <p>Polaroid spots are ready for you. Once you have the file, just swap the placeholder slot for your own photo, drop the image in the same folder and point the &lt;img&gt; tag at it.</p>
+    <div class="frames">
+      <div class="polaroid"><div class="tape"></div><div class="slot">add photo</div><div class="cap">our favorite call</div></div>
+      <div class="polaroid"><div class="tape"></div><div class="slot">add photo</div><div class="cap">that one day</div></div>
+      <div class="polaroid"><div class="tape"></div><div class="slot">add photo</div><div class="cap">us, always</div></div>
+    </div>
+  </section>
+
+  <section id="books">
+    <div class="eyebrow">Page Eight</div>
+    <h2>The Book Corner</h2>
+    <div class="rule"></div>
+    <div class="quote-card">
+<p>"And Allah is the best of planners."</p>
+<div class="src">— Qur'an 8:30</div>
+</div>
+
+<div class="quote-card">
+<p>"Indeed, with hardship comes ease."</p>
+<div class="src">— Qur'an 94:6</div>
+</div>
+    <div class="quote-card">
+<p>"And Allah is the best of planners."</p>
+<div class="src">— Qur'an 8:30</div>
+</div>
+
+<div class="quote-card">
+<p>"Indeed, with hardship comes ease."</p>
+<div class="src">— Qur'an 94:6</div>
+</div>
+    <div class="quote-card"><p>"a second quote, maybe about love, patience, or home"</p><div class="src">— Author, Book Title</div></div>
+  </section>
+
+  <section id="joke">
+    <div class="eyebrow">Page Nine</div>
+    <h2>Just For Laughs</h2>
+    <div class="rule"></div>
+    <div class="joke-card">
+      <p style="margin-bottom:0;">You hate math, I'm good at it, so here's the only equation I'll ever ask you to solve: me + you = the one thing I never overthink.</p>
+    </div>
+    <p style="margin-top:18px; color:var(--muted); font-size:15px;">Swap this for your own joke or inside joke any time, this is just here to keep things light.</p>
+  </section>
+
+  <section id="closing" class="closing">
+    <div class="eyebrow">Final Page</div>
+    <h2>Last Words 🥹✨</h2>
+    <div class="rule"></div>
+    <div class="teddy-wrap">
+      <svg width="110" height="110" viewBox="0 0 100 100">
+        <circle cx="25" cy="20" r="9" fill="#D8BD84"/>
+        <circle cx="75" cy="20" r="9" fill="#D8BD84"/>
+        <circle cx="50" cy="42" r="26" fill="#E8C99A"/>
+        <ellipse cx="50" cy="50" rx="11" ry="9" fill="#F2EAD9"/>
+        <circle cx="42" cy="36" r="2.6" fill="#2A2520"/>
+        <circle cx="58" cy="36" r="2.6" fill="#2A2520"/>
+        <circle cx="50" cy="44" r="2.2" fill="#6B2737"/>
+        <ellipse cx="50" cy="80" rx="24" ry="18" fill="#E8C99A"/>
+        <path d="M50 70 L43 80 L50 78 L57 80 Z" fill="#E63950"/>
+      </svg>
+    </div>
+    <div class="fillbox">
+      <span class="tag">To My Jaan...</span><br>
+
+If you've reached this page...
+
+You've reached the end of this website...
+
+But hopefully not the end of the memories we'll continue making...
+
+From 26 November 2025...
+
+To 20 January 2026...
+
+To every conversation, every laugh, every misunderstanding we worked through, every picture, every video, every letter, every memory...
+
+Thank you...
+
+Thank you for being someone who brought happiness, comfort, and countless unforgettable moments into my life...
+
+I pray that Allah grants you success...
+
+Protects you...
+
+Guides you...
+
+And fills your future with goodness...
+
+No matter where life takes us...
+
+These memories will always remain special...
+
+Keep smiling...
+
+Keep believing in yourself...
+
+Keep making people proud...
+
+And never forget how appreciated you truly are...
+
+🤌🏻🫀🪄✨
+🫶🏻🩵✨🥹
+💝💖💗💓💞💕
+
+— Ahmed
+    </div>
+    <div class="signoff">— Ahmed</div>
+  </section>
+
+</main>
+
+<script>
+  const sections = document.querySelectorAll('section');
+  const navButtons = document.querySelectorAll('.ribbon-nav button');
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        navButtons.forEach(btn=>btn.classList.toggle('active', btn.dataset.target === entry.target.id));
+      }
+    });
+  }, {threshold:0.4});
+  sections.forEach(s=>observer.observe(s));
+  navButtons.forEach(btn=>btn.addEventListener('click', ()=>{
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth'});
+  }));
+
+  // floating hearts generator
+  const field = document.getElementById('heartField');
+  const colors = ['#FF6F91','#E63950','#7EC8E3','#B98AE3','#D8BD84'];
+  for(let i=0;i<22;i++){
+    const h = document.createElement('div');
+    h.className='heart';
+    const size = 10 + Math.random()*22;
+    h.style.width = size+'px';
+    h.style.height = size+'px';
+    h.style.left = Math.random()*100+'%';
+    h.style.background = colors[Math.floor(Math.random()*colors.length)];
+    h.style.animationDuration = (10+Math.random()*14)+'s';
+    h.style.animationDelay = (Math.random()*12)+'s';
+    field.appendChild(h);
+  }
+  for(let i=0;i<14;i++){
+    const s = document.createElement('div');
+    s.className='star';
+    s.textContent='✦';
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = (Math.random()*3)+'s';
+    field.appendChild(s);
+  }
+</script>
+
+</body>
+</html>
